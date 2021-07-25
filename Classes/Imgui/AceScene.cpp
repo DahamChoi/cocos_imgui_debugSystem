@@ -8,6 +8,8 @@
 #include "AceScene.h"
 #include "ImguiManager.h"
 
+#include "AceLog.h"
+
 USING_NS_CC;
 USING_NS_ACE
 
