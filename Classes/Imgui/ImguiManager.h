@@ -12,6 +12,8 @@
 #include "Singleton.h"
 #include "ImGuiObj.h"
 
+#include <vector>
+
 NS_ACE_BEGIN
 
 class ImguiManager final : public Singleton<ImguiManager>

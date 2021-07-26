@@ -11,6 +11,8 @@
 
 #include "ace.h"
 
+#include <memory>
+
 NS_ACE_BEGIN
 
 const static ImVec2 DEFAULT_IMVEC2 = {0.0f, 0.0f};

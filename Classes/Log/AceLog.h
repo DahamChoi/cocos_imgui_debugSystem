@@ -2,6 +2,9 @@
 
 #include "ace.h"
 
+#include <string>
+#include <memory>
+
 NS_ACE_BEGIN
 
 class AceLog

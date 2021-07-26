@@ -29,10 +29,6 @@ public:
     void update();
     
 private:
-    std::string inputText;
-    std::string befText;
-    
-private:
     ImGuiImeDelegate() = default;
 };
 

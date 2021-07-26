@@ -7,6 +7,9 @@
 
 #include "AceHangul.h"
 
+#include <map>
+#include <unordered_map>
+
 USING_NS_ACE;
 
 AceHangul::AceHangul(int number)

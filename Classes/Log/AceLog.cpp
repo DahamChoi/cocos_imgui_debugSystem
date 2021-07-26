@@ -12,6 +12,4 @@ void AceLog::log(const std::string& msg, Type type)
     pAceLog->strTime = "";
     
     LogData::getInstance()->addLog(pAceLog);
-    
-    cocos2d::log(msg.c_str());
 }

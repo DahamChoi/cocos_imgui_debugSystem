@@ -9,12 +9,15 @@
 
 #include "ace.h"
 
+#include <string>
+
 NS_ACE_BEGIN
 
 class AceHangul
 {
 public:
-    enum HANGUL_ENUM {
+    enum HANGUL_ENUM
+    {
         EMPTY = -1,
         JONGSEONG_EMPTY = 0,
         START_HANGUL = 0xAC00,

@@ -9,6 +9,7 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "AceLog.h"
+#include "cocos2d.h"
 
 #include <string>
 
@@ -84,7 +85,7 @@ void ImGuiImeDelegate::insertText(const char * text, size_t len)
 void ImGuiImeDelegate::deleteBackward()
 {
     ImGuiIO& io = ImGui::GetIO();
-    io.KeysDown[(int)cocos2d::EventKeyboard::KeyCode::KEY_BACKSPACE] = true;
+    io.AddInputCharacter(IM_UNICODE_CODEPOINT_MAX);
 }
 
 void ImGuiImeDelegate::update()

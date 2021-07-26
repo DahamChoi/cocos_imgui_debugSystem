@@ -4014,7 +4014,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         SetFocusID(id, window);
         FocusWindow(window);
         
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFROM == CC_PLATFROM_ANDROID
         ace::ImGuiImeDelegate::getInstance()->attachWithIME();
 #endif
         
@@ -4039,7 +4039,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
     if (g.ActiveId == id && io.MouseClicked[0] && !init_state && !init_make_active)
     {
         clear_active_id = true;
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFROM == CC_PLATFROM_ANDROID
         ace::ImGuiImeDelegate::getInstance()->detachWithIME();
 #endif
     }
@@ -4049,6 +4049,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
     bool render_selection = state && state->HasSelection() && (RENDER_SELECTION_WHEN_INACTIVE || render_cursor);
     bool value_changed = false;
     bool enter_pressed = false;
+    bool backspace_processed = false;
 
     // When read-only we always use the live data passed to the function
     // FIXME-OPT: Because our selection/cursor code currently needs the wide text we need to convert it when active, which is not ideal :(
@@ -4153,41 +4154,55 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
                 if(io.InputQueueCharacters.Size == 2)
                 {
                     io.InputQueueCharacters.erase(io.InputQueueCharacters.begin());
+                    backspace_processed = true;
                 }
-#endif
                 
-                for (int n = 0; n < io.InputQueueCharacters.Size; n++)
+                unsigned int c = (unsigned int)io.InputQueueCharacters.front();
+                if(state->Stb.cursor > 0 && io.InputQueueCharacters.Size == 1)
                 {
-                    // Insert character if they pass filtering
-                    unsigned int c = (unsigned int)io.InputQueueCharacters[n];
-                    if (c == '\t' && io.KeyShift)
-                        continue;
-                    if (InputTextFilterCharacter(&c, flags, callback, callback_user_data, ImGuiInputSource_Keyboard))
+                    unsigned int prevText = state->TextW[state->Stb.cursor - 1];
+                    if(ace::AceHangul::isHangul(c) && ace::AceHangul::isHangul(prevText))
                     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-                        if(state->Stb.cursor > 0 && io.InputQueueCharacters.Size == 1 && ace::AceHangul::isHangul(c) && ace::AceHangul::isHangul(state->TextW[state->Stb.cursor - 1]))
-                        {
-                            ace::AceHangul curHangul = c;
-                            ace::AceHangul prevHangul = state->TextW[state->Stb.cursor - 1];
+                        ace::AceHangul curHangul = c;
+                        ace::AceHangul prevHangul = prevText;
 
-                            ace::AceHangul::assemble(prevHangul, curHangul);
-                            ImStb::STB_TEXTEDIT_DELETECHARS(state, state->Stb.cursor - 1, 1);
+                        ace::AceHangul::assemble(prevHangul, curHangul);
+                        ImStb::STB_TEXTEDIT_DELETECHARS(state, state->Stb.cursor - 1, 1);
 
-                            state->OnKeyPressed(prevHangul.getNumber());
-                            if(false == curHangul.isEmpty())
-                            {
-                                state->OnKeyPressed(curHangul.getNumber());
-                            }
-                        }
-                        else
+                        state->OnKeyPressed(prevHangul.getNumber());
+                        if(false == curHangul.isEmpty())
                         {
-                            state->OnKeyPressed((int)c);
+                            state->OnKeyPressed(curHangul.getNumber());
                         }
-#else
-                        state->OnKeyPressed((int)c);
-#endif
+                    }
+                    else
+                    {
+                        state->OnKeyPressed(c);
                     }
                 }
+                else
+                {
+                    for (int n = 0; n < io.InputQueueCharacters.Size; n++)
+                    {
+                        unsigned int c = (unsigned int)io.InputQueueCharacters[n];
+                        state->OnKeyPressed((int)c);
+                    }
+                }
+#else
+                for (int n = 0; n < io.InputQueueCharacters.Size; n++)
+                {
+                    unsigned int c = (unsigned int)io.InputQueueCharacters[n];
+                    if(c == IM_UNICODE_CODEPOINT_MAX)
+                    {
+                        state->OnKeyPressed(STB_TEXTEDIT_K_BACKSPACE);
+                        backspace_processed = true;
+                    }
+                    else
+                    {
+                        state->OnKeyPressed((int)c);
+                    }
+                }
+#endif
             }
             
             // Consume characters
@@ -4229,7 +4244,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         else if (IsKeyPressedMap(ImGuiKey_Home))                        { state->OnKeyPressed(io.KeyCtrl ? STB_TEXTEDIT_K_TEXTSTART | k_mask : STB_TEXTEDIT_K_LINESTART | k_mask); }
         else if (IsKeyPressedMap(ImGuiKey_End))                         { state->OnKeyPressed(io.KeyCtrl ? STB_TEXTEDIT_K_TEXTEND | k_mask : STB_TEXTEDIT_K_LINEEND | k_mask); }
         else if (IsKeyPressedMap(ImGuiKey_Delete) && !is_readonly)      { state->OnKeyPressed(STB_TEXTEDIT_K_DELETE | k_mask); }
-        else if (IsKeyPressedMap(ImGuiKey_Backspace) && !is_readonly)
+        else if (IsKeyPressedMap(ImGuiKey_Backspace) && !is_readonly && !backspace_processed)
         {
             if (!state->HasSelection())
             {
