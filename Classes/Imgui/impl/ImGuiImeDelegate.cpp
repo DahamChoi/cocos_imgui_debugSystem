@@ -1,10 +1,3 @@
-//
-//  ImGuiImeDelegate.cpp
-//  MPBReboot
-//
-//  Created by 최다함 on 2021/07/23.
-//
-
 #include "ImGuiImeDelegate.h"
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -86,6 +79,7 @@ void ImGuiImeDelegate::deleteBackward()
 {
     ImGuiIO& io = ImGui::GetIO();
     io.AddInputCharacter(IM_UNICODE_CODEPOINT_MAX);
+    io.KeysDown[(int)cocos2d::EventKeyboard::KeyCode::KEY_BACKSPACE] = true;
 }
 
 void ImGuiImeDelegate::update()

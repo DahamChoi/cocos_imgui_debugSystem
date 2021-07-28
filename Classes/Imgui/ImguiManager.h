@@ -1,18 +1,10 @@
-//
-//  ImguiManager.h
-//  MPBReboot
-//
-//  Created by 최다함 on 2021/07/22.
-//
-
 #pragma once
 
 #include "ace.h"
 
 #include "Singleton.h"
-#include "ImGuiObj.h"
 
-#include <vector>
+#include "ImGuiObj.h"
 
 NS_ACE_BEGIN
 
@@ -21,7 +13,16 @@ class ImguiManager final : public Singleton<ImguiManager>
     friend class Singleton<ImguiManager>;
 
 private:
-    std::vector<ImGuiObjPtr> vecImGui;
+    std::map<std::string, ImGuiObjPtr> mapImGui;
+    std::vector<std::string> vecLateRemoveMapImGui;
+    
+public:
+    float windowScale_ = 1.f;
+    
+private:
+    float lastMoveDistance_ = 0.f;
+    float touchMovedDistance_ = 0.f;
+    float possibleGestureTime_ = 0.f;
     
 public:
     virtual bool initSingle() override;
@@ -29,12 +30,14 @@ public:
 public:
     void update();
     void process();
+    void detectDebugGesture();
     
 public:
-    void addImGui(const ImGuiObjPtr& pImGui);
+    bool addImGui(const std::string& key, const ImGuiObjPtr& pImGui);
+    bool isPossibleKey(const std::string& key);
     
 public:
-    void removeImGui(const ImGuiObjPtr& pImGui);
+    void removeImGui(const std::string& key);
     
 private:
     ImguiManager() = default;

@@ -120,10 +120,6 @@ bool HelloWorld::init()
         this->addChild(sprite, 0);
     }
     
-    // Add Debug Window using ImGui
-    ImGuiObjPtr pImGui = std::make_shared<DebugLogGui>();
-    ImguiManager::getInstance()->addImGui(pImGui);
-    
     return true;
 }
 

@@ -1,10 +1,3 @@
-//
-//  AceHangul.h
-//  MPBReboot
-//
-//  Created by 최다함 on 2021/07/23.
-//
-
 #pragma once
 
 #include "ace.h"

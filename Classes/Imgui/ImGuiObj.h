@@ -1,17 +1,8 @@
-//
-//  ImGuiObj.h
-//  MPBReboot
-//
-//  Created by 최다함 on 2021/07/22.
-//
-
 #pragma once
-
-#include "imgui.h"
 
 #include "ace.h"
 
-#include <memory>
+#include "imgui.h"
 
 NS_ACE_BEGIN
 
@@ -24,11 +15,17 @@ protected:
     ImVec2 _windowSize;
     
 protected:
-    ImGuiObj(const ImVec2& windowPos_ = DEFAULT_IMVEC2, const ImVec2& windowSize = DEFAULT_IMVEC2);
+    ImGuiObj(const ImVec2& windowPos_ = DEFAULT_IMVEC2, const ImVec2& windowSize_ = DEFAULT_IMVEC2);
     
 protected:
     void begin(const char* name);
     void end();
+    
+protected:
+    void ScrollWhenDraggingOnVoid(const ImVec2 &delta, const char* name);
+    
+private:
+    bool isFirstScroll = true;
     
 public:
     virtual void update() = 0;
@@ -37,3 +34,4 @@ public:
 using ImGuiObjPtr = std::shared_ptr<ImGuiObj>;
 
 NS_ACE_END
+

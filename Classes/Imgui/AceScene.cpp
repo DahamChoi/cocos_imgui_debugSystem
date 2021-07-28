@@ -1,10 +1,3 @@
-//
-//  AceScene.cpp
-//  cocos_mygui_debugSystem
-//
-//  Created by 최다함 on 2021/07/25.
-//
-
 #include "AceScene.h"
 #include "ImguiManager.h"
 

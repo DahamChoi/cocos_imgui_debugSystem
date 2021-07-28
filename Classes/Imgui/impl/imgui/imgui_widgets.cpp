@@ -51,6 +51,8 @@ Index of this file:
 // cocos2d-x IME delegater
 #include "ImGuiImeDelegate.h"
 
+//#define IS_ON_IPHONE_EMURATOR
+
 //-------------------------------------------------------------------------
 // Warnings
 //-------------------------------------------------------------------------
@@ -4150,13 +4152,12 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         {
             if (!ignore_char_inputs && !is_readonly && !user_nav_input_start)
             {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-                if(io.InputQueueCharacters.Size == 2)
+#ifdef IS_ON_IPHONE_EMURATOR
+                if(io.InputQueueCharacters.Size >= 2)
                 {
                     io.InputQueueCharacters.erase(io.InputQueueCharacters.begin());
-                    backspace_processed = true;
                 }
-                
+
                 unsigned int c = (unsigned int)io.InputQueueCharacters.front();
                 if(state->Stb.cursor > 0 && io.InputQueueCharacters.Size == 1)
                 {
@@ -4175,7 +4176,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
                             state->OnKeyPressed(curHangul.getNumber());
                         }
                     }
-                    else
+                    else if(c != IM_UNICODE_CODEPOINT_MAX)
                     {
                         state->OnKeyPressed(c);
                     }
@@ -4185,7 +4186,10 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
                     for (int n = 0; n < io.InputQueueCharacters.Size; n++)
                     {
                         unsigned int c = (unsigned int)io.InputQueueCharacters[n];
-                        state->OnKeyPressed((int)c);
+                        if(c != IM_UNICODE_CODEPOINT_MAX)
+                        {
+                            state->OnKeyPressed((int)c);
+                        }
                     }
                 }
 #else

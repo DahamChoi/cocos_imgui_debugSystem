@@ -1,10 +1,3 @@
-//
-//  AceHangul.cpp
-//  MPBReboot
-//
-//  Created by 최다함 on 2021/07/23.
-//
-
 #include "AceHangul.h"
 
 #include <map>
