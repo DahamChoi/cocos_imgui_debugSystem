@@ -1,6 +1,6 @@
 # cocos_imgui_debugSystem
 
-![enter image description here](https://user-images.githubusercontent.com/7011030/126887843-eab3d335-b59c-4582-b4bb-5b3409a39d98.png)
+[![demo viedo](https://img.youtube.com/vi/dZ63Hsk96wY/0.jpg)](https://www.youtube.com/watch?v=dZ63Hsk96wY)
 
 ## version
 
