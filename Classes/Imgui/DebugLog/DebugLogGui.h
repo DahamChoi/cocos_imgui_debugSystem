@@ -9,10 +9,10 @@ NS_ACE_BEGIN
 class DebugLogGui : public ImGuiObj
 {
 public:
-    DebugLogGui() : ImGuiObj({ 100.f, 50.f }, { 800.f, 600.f }), comboShowLogCountItems_{ "30", "50", "100", "500", "1000"}
-    {}
-    
     static const std::string DebugLogGuiKey;
+    
+public:
+    DebugLogGui();
     
 private:
     // 검색창

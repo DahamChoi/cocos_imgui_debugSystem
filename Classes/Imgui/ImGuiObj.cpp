@@ -4,14 +4,9 @@
 
 USING_NS_ACE
 
-ImGuiObj::ImGuiObj(const ImVec2& windowPos_, const ImVec2& windowSize_)
+ImGuiObj::ImGuiObj()
 {
-    float windowScale = ImguiManager::getInstance()->windowScale_;
-    ImVec2 windowSize = { windowSize_.x * windowScale, windowSize_.y * windowScale };
-    ImVec2 windowPos = { windowPos_.x * windowScale, windowPos_.y * windowScale };
     
-    _windowPos = windowPos;
-    _windowSize = windowSize;
 }
 
 void ImGuiObj::begin(const char * name)
@@ -23,6 +18,18 @@ void ImGuiObj::begin(const char * name)
 void ImGuiObj::end()
 {
     ImGui::End();
+}
+
+void ImGuiObj::setWindowPos(float w, float h)
+{
+    float windowScale = ImguiManager::getInstance()->windowScale_;
+    windowPos_ = { w * windowScale, h * windowScale };
+}
+
+void ImGuiObj::setWindowSize(float w, float h)
+{
+    float windowScale = ImguiManager::getInstance()->windowScale_;
+    windowSize_ = { w * windowScale, h * windowScale };
 }
 
 void ImGuiObj::ScrollWhenDraggingOnVoid(const ImVec2 &delta, const char* name)

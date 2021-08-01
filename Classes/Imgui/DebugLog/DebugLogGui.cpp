@@ -7,11 +7,17 @@ USING_NS_ACE
 
 const std::string DebugLogGui::DebugLogGuiKey = "DebugLog";
 
+DebugLogGui::DebugLogGui() : comboShowLogCountItems_{ "30", "50", "100", "500", "1000"}
+{
+    setWindowPos(100.f, 50.f);
+    setWindowSize(900.f, 600.f);
+}
+
 void DebugLogGui::update()
 {
     {
-        ImGui::SetNextWindowPos(_windowPos, ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowSize(_windowSize, ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowPos(windowPos_, ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(windowSize_, ImGuiCond_FirstUseEver);
     }
     
     ImGuiObj::begin("DEBUG LOG");

@@ -104,4 +104,3 @@ void ImguiManager::removeImGui(const std::string& key)
 {
     vecLateRemoveMapImGui.push_back(key);
 }
-

@@ -4016,7 +4016,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         SetFocusID(id, window);
         FocusWindow(window);
         
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFROM == CC_PLATFROM_ANDROID
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
         ace::ImGuiImeDelegate::getInstance()->attachWithIME();
 #endif
         
@@ -4041,7 +4041,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
     if (g.ActiveId == id && io.MouseClicked[0] && !init_state && !init_make_active)
     {
         clear_active_id = true;
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFROM == CC_PLATFROM_ANDROID
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
         ace::ImGuiImeDelegate::getInstance()->detachWithIME();
 #endif
     }

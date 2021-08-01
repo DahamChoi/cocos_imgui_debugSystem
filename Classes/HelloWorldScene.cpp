@@ -28,6 +28,8 @@
 #include "DebugLogGui.h"
 #include "ImguiManager.h"
 
+#include "AceLog.h"
+
 USING_NS_CC;
 USING_NS_ACE
 
@@ -126,13 +128,14 @@ bool HelloWorld::init()
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
-    //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
-
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
-
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
+//    //Close the cocos2d-x game scene and quit the application
+//    Director::getInstance()->end();
+//
+//    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
+//
+//    EventCustom customEndEvent("game_scene_close_event");
+//    _eventDispatcher->dispatchEvent(&customEndEvent);
+    
+    static int counter = 1;
+    ace::AceLog::log("menuCloseCallBack : " + std::to_string(counter++));
 }

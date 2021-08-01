@@ -6,6 +6,9 @@
 
 #include "ImGuiObj.h"
 
+#include <unordered_map>
+#include <cocos/cocos2d.h>
+
 NS_ACE_BEGIN
 
 class ImguiManager final : public Singleton<ImguiManager>

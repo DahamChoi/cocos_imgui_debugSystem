@@ -11,11 +11,15 @@ const static ImVec2 DEFAULT_IMVEC2 = {0.0f, 0.0f};
 class ImGuiObj
 {
 protected:
-    ImVec2 _windowPos;
-    ImVec2 _windowSize;
+    ImVec2 windowPos_;
+    ImVec2 windowSize_;
     
 protected:
-    ImGuiObj(const ImVec2& windowPos_ = DEFAULT_IMVEC2, const ImVec2& windowSize_ = DEFAULT_IMVEC2);
+    ImGuiObj();
+    
+protected:
+    void setWindowPos(float w, float h);
+    void setWindowSize(float w, float h);
     
 protected:
     void begin(const char* name);
